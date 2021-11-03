@@ -11,22 +11,26 @@ addEventListener('message', async (event: MessageEvent) => {
   files.forEach(({ path, file }: FileObj) => zip.file(path, file, {
     createFolders: true,
   }));
-
-  const blob = await zip.generateAsync({ type: 'blob' }, (metadata: any) => {
-    postMessage({
-      payload: metadata, type: 'progress', source: 'zip', id,
+  console.debug({ zip });
+  try {
+    const blob = await zip.generateAsync({ type: 'blob' }, (metadata: any) => {
+      // console.debug(metadata.percent);
+      postMessage({
+        payload: metadata, type: 'progress', source: 'zip', id,
+      });
     });
-  });
-
-  postMessage({
-    payload: URL.createObjectURL(
-      new File([blob], event.data.folder, { type: 'application/zip' }),
-    ),
-    folder,
-    id,
-    type: 'result',
-    source: 'zip',
-  });
+    postMessage({
+      payload: URL.createObjectURL(
+        new File([blob], event.data.folder, { type: 'application/zip' }),
+      ),
+      folder,
+      id,
+      type: 'result',
+      source: 'zip',
+    });
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 export {};

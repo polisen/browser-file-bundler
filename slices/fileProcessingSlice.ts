@@ -1,29 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-  results: {},
 };
 
 export const onboardingSlice = createSlice({
-  name: "onboarding",
+  name: "fileProcessing",
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     appendResults: (state: any, action: any) => {
-      const { id } = action.payload;
-      if (!state.results[id]) state.results[id] = {};
+      const { id, payload } = action.payload;
+      if (!state[id]) state[id] = {};
       if (action.payload.type === "progress") {
-        const {
-          payload: { percent },
-        } = action.payload;
-        state.results[id].conversionProgress = percent;
+        const { percent } = payload;
+        state[id].conversionProgress = percent;
       } else if (action.payload.type === "result") {
-        state.results[id] = { ...state.results[id], ...action.payload };
+        state[id] = { ...state[id], payload };
+      } else if (action.payload.type === "queue") {
+        payload.forEach((p: any) => {
+          state[p.id] = { ...state[p.id], ...p };
+        });
       }
-    },
-    setFiles: (state: any, action: any) => {
-      action.payload.forEach(f => {
-        state.results[]
-      })
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,

@@ -6,12 +6,9 @@ const pako = require('pako');
 
 addEventListener('message', async (event: MessageEvent) => {
   const {
-    file, path, relativePath, id,
+    file, id,
   } = event.data;
   // console.debug('event.data', event.data);
-  const {
-    name, type, size,
-  } = event.data.file;
   const chunks = sliceFile(file, 4);
 
   const deflatedChunks = chunks
@@ -21,16 +18,9 @@ addEventListener('message', async (event: MessageEvent) => {
   const concatedArray = concatUint8Arrays(results);
 
   postMessage({
-    payload: {
-      name,
-      type,
-      size,
-      path,
-      relativePath,
-      url: URL.createObjectURL(new File([concatedArray], file.name, {
-        type: 'gzip',
-      })),
-    },
+    payload: URL.createObjectURL(new File([concatedArray], file.name, {
+      type: 'gzip',
+    })),
     id,
     type: 'result',
     source: 'gzip',

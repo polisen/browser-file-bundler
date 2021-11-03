@@ -19,7 +19,7 @@ function MyDropzone({ setFiles }: { setFiles: Function }) {
 
   return (
     <Container {...getRootProps()}>
-      <input {...getInputProps()} />
+      <input {...getInputProps()} type="file" />
       {isDragActive ? (
         <p>Drop the files here ...</p>
       ) : (

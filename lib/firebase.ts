@@ -3,20 +3,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
 import 'firebase/compat/functions';
-
-// Your web app's Firebase configuration
-const fbConfig = {
-  apiKey: 'AIzaSyBsPBrWjq5zP-oZGMeTbTipN714UzwyBqk',
-  authDomain: 'interlink-318621.firebaseapp.com',
-  databaseURL:
-    'https://interlink-318621-default-rtdb.europe-west1.firebasedatabase.app',
-  projectId: 'interlink-318621',
-  storageBucket: 'interlink-318621.appspot.com',
-  messagingSenderId: '271790382418',
-  appId: '1:271790382418:web:85740bdc99e26ca0e6ee8b',
-  measurementId: 'G-DPSZ0FWPF1',
-};
-
+import fbConfig from './firebase_config';
 // Initialize Firebase
 try {
   firebase.initializeApp(fbConfig);

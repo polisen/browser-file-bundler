@@ -1,7 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { firebaseReducer } from 'react-redux-firebase';
 import { createFirestoreInstance, firestoreReducer } from 'redux-firestore';
-import onboardingSlice from 'slices/onboardingSlice';
+import fileProcessingSlice from 'slices/fileProcessingSlice';
 import firebase from './firebase';
 
 // react-redux-firebase config
@@ -15,7 +15,7 @@ export const store = configureStore({
   reducer: {
     firebase: firebaseReducer,
     firestore: firestoreReducer,
-    onboarding: onboardingSlice,
+    fileProcessing: fileProcessingSlice,
   },
 });
 
