@@ -33,3 +33,4 @@ yarn-error.log*
 # vercel
 .vercel
 *firebase_config*
+test_folder
