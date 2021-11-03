@@ -3,7 +3,11 @@
     "target": "esnext",
     "module": "esnext",
     "jsx": "preserve",
-    "lib": ["webworker","dom", "es2017",],
+    "lib": [
+      "webworker",
+      "dom",
+      "es2017"
+    ],
     "moduleResolution": "node",
     "allowJs": true,
     "noEmit": true,
@@ -19,8 +23,15 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "incremental": true
   },
-  "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

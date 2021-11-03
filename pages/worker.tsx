@@ -5,7 +5,7 @@ import * as React from 'react';
 const IndexPage = () => {
   const workerRef: any = useRef();
   useEffect(() => {
-    workerRef.current = new Worker(new URL('../workers/standard.worker.ts', import.meta.url));
+    workerRef.current = new Worker(new URL('../workers/bundler.worker.ts', import.meta.url));
     workerRef.current.onmessage = (evt: any) => alert(`WebWorker Response => ${evt.data}`);
     return () => {
       workerRef.current.terminate();

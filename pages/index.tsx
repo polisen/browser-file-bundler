@@ -1,5 +1,8 @@
 import styled from 'styled-components';
-import * as React from 'react';
+import React, { useEffect } from 'react';
+import Dropzone from 'components/Dropzone';
+// import { createFFmpeg } from '@ffmpeg/ffmpeg';
+import useBundler from 'hooks/useBundler';
 
 const Container = styled.div`
   width: 100%;
@@ -9,7 +12,22 @@ const Container = styled.div`
 `;
 
 export default function Home() {
+  // const ffmpeg = createFFmpeg({ log: true });
+
+  // useEffect(() => {
+  //   console.debug({ ffmpeg });
+  // }, [ffmpeg]);
+  const { handleWork } = useBundler();
+
+  function handleFiles(acceptedFiles: File[]) {
+    if (acceptedFiles.length > 0) {
+      handleWork(acceptedFiles);
+    }
+  }
+
   return (
-    <Container />
+    <Container>
+      <Dropzone setFiles={(files: File[]) => handleFiles(files)} />
+    </Container>
   );
 }

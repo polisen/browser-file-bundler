@@ -1,4 +1,9 @@
 import 'styles/globals.css';
+import { store, rrfProps } from 'lib/store';
+import { Provider } from 'react-redux';
+import {
+  ReactReduxFirebaseProvider,
+} from 'react-redux-firebase';
 import styled from 'styled-components';
 import React from 'react';
 
@@ -12,7 +17,11 @@ const Wrapper = styled.div`
 function MyApp({ Component, pageProps }: any) {
   return (
     <Wrapper>
-      <Component {...pageProps} />
+      <Provider store={store}>
+        <ReactReduxFirebaseProvider {...rrfProps}>
+          <Component {...pageProps} />
+        </ReactReduxFirebaseProvider>
+      </Provider>
     </Wrapper>
   );
 }
