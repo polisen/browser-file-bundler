@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import Dropzone from 'components/Dropzone';
 // import { createFFmpeg } from '@ffmpeg/ffmpeg';
 import useBundler from 'hooks/useBundler';
+import { useSelector } from 'react-redux';
+import Files from 'components/Files';
 
 const Container = styled.div`
   width: 100%;
@@ -12,11 +14,7 @@ const Container = styled.div`
 `;
 
 export default function Home() {
-  // const ffmpeg = createFFmpeg({ log: true });
-
-  // useEffect(() => {
-  //   console.debug({ ffmpeg });
-  // }, [ffmpeg]);
+  const files = useSelector((state: any) => state.fileProcessing);
   const { handleWork } = useBundler();
 
   function handleFiles(acceptedFiles: File[]) {
@@ -27,7 +25,11 @@ export default function Home() {
 
   return (
     <Container>
-      <Dropzone setFiles={(files: File[]) => handleFiles(files)} />
+      {
+        Object.keys(files).length > 0
+          ? <Files />
+          : <Dropzone setFiles={(acceptedFiles: File[]) => handleFiles(acceptedFiles)} />
+      }
     </Container>
   );
 }

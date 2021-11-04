@@ -9,6 +9,7 @@ export interface FileObj {
   file: File;
   path: string;
   relativePath?: string;
+  folder: string;
   id: string;
 }
 
@@ -41,28 +42,33 @@ interface Queue {
 const parseQueue = (queue: Queue) => Object.entries(queue).map(([key, value]) => {
   const files: any[] = [];
   const objectType = value.length > 1 ? 'folder' : 'file';
+  let entityName = ''
   let cumulativeSize = 0;
 
   value.forEach((fileObj: FileObj) => {
     const {
       file: { name, size, type },
       relativePath,
+      folder,
       path,
     } = fileObj;
     files.push({
       name,
       size,
+      folder,
       type,
       relativePath,
       path,
     });
     cumulativeSize += size;
+    entityName = folder;
   });
   return {
     id: key,
     objectType,
     cumulativeSize,
     files,
+    entityName,
   };
 });
 

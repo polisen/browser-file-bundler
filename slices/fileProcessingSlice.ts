@@ -8,18 +8,24 @@ export const onboardingSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     appendResults: (state: any, action: any) => {
-      const { id, payload } = action.payload;
+      const { id, payload, type, source } = action.payload;
       if (!state[id]) state[id] = {};
-      if (action.payload.type === "progress") {
-        const { percent } = payload;
-        state[id].conversionProgress = percent;
-      } else if (action.payload.type === "result") {
-        state[id] = { ...state[id], payload };
-      } else if (action.payload.type === "queue") {
-        payload.forEach((p: any) => {
-          state[p.id] = { ...state[p.id], ...p };
-        });
+      switch (type) {
+        case 'progress':
+          const { percent } = payload;
+          state[id].conversionProgress = percent;
+          return
+        case 'result':
+          state[id] = { ...state[id], payload, source };
+          return;
+        case 'queue':
+          payload.forEach((p: any) => {
+            state[p.id] = { ...state[p.id], ...p, source };
+          });
+          return
+        default: return;
       }
+
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
