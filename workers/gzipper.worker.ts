@@ -15,16 +15,14 @@ addEventListener('message', async (event: MessageEvent) => {
     .map((b: Blob) => b.arrayBuffer().then((ab: ArrayBuffer) => pako.gzip(ab)));
   const results = await Promise.all(deflatedChunks);
 
-  const concatedArray = concatUint8Arrays(results);
-
+  const payload = concatUint8Arrays(results);
+  console.debug('gzipper', payload);
   postMessage({
-    payload: URL.createObjectURL(new File([concatedArray], file.name, {
-      type: 'gzip',
-    })),
+    payload,
     id,
     type: 'result',
     source: 'gzip',
-  });
+  }, [payload.buffer]);
 });
 
 export {};

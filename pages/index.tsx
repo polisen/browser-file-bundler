@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
-import Dropzone from "components/Dropzone";
+import React, { useEffect } from 'react';
+import Dropzone from 'components/Dropzone';
 // import { createFFmpeg } from '@ffmpeg/ffmpeg';
-import styled from "styled-components";
-import useBundler from "hooks/useBundler";
-import { useSelector } from "react-redux";
-import Files from "components/Files";
+import styled from 'styled-components';
+import useBundler from 'hooks/useBundler';
+import {useFileUploader} from 'hooks/useFileUploader';
+import { useSelector } from 'react-redux';
+import Files from 'components/Files';
 
 const Container = styled.div`
   width: 100%;
@@ -50,8 +51,9 @@ const DivDiv = styled.div`
 `;
 
 export default function Home() {
-  const files = useSelector((state: any) => state.fileProcessing);
+  const files = useSelector((state: any) => state.fileProcessing.bundles);
   const { handleWork } = useBundler();
+  useFileUploader();
 
   function handleFiles(acceptedFiles: File[]) {
     if (acceptedFiles.length > 0) {

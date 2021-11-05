@@ -14,6 +14,7 @@ module.exports = {
     "react/jsx-props-no-spreading": "off",
     "no-console": ["error", { allow: ["warn", "error", "debug"] }],
     "react-hooks/exhaustive-deps": "off",
+    "import/no-unresolved": 0,
     "import/no-extraneous-dependencies": [
       "error",
       {
@@ -33,12 +34,7 @@ module.exports = {
 
       },
     ],
-    "import/no-unresolved": [
-      "error",
-      {
-        ignore: ["@storybook"],
-      },
-    ],
+    "import/no-unresolved": 0,
     'import/prefer-default-export': 'off',
 
   },

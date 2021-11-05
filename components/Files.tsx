@@ -1,6 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { setBundleId } from 'slices/fileProcessingSlice';
 
 const FileContainer = styled.div`
   width: 100%;
@@ -33,7 +34,9 @@ function formatBytes(bytes: number, decimals = 2) {
   return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 }
 export default function Files() {
-  const fileList = useSelector((state: any) => state.fileProcessing);
+  const fileList = useSelector((state: any) => state.fileProcessing.bundles);
+  const dispatch = useDispatch();
+
   return (
     <FileContainer>
       {Object.entries(fileList).map(
@@ -41,6 +44,7 @@ export default function Files() {
           ,
           {
             objectType,
+            id,
             cumulativeSize,
             conversionProgress,
             files,
@@ -51,6 +55,7 @@ export default function Files() {
           if (!files) return <></>;
           return (
             <div>
+              <button type="button" onClick={() => dispatch(setBundleId(id))}>upload</button>
               <div>{entityName}</div>
 
               <div>{objectType}</div>

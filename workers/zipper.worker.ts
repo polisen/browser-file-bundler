@@ -11,23 +11,21 @@ addEventListener('message', async (event: MessageEvent) => {
   files.forEach(({ path, file }: FileObj) => zip.file(path, file, {
     createFolders: true,
   }));
-  console.debug({ zip });
   try {
-    const blob = await zip.generateAsync({ type: 'blob' }, (metadata: any) => {
-      // console.debug(metadata.percent);
+    const payload = await zip.generateAsync({ type: 'uint8array' }, (metadata: any) => {
       postMessage({
         payload: metadata, type: 'progress', source: 'zip', id,
       });
     });
+    console.debug('zipper', payload);
+
     postMessage({
-      payload: URL.createObjectURL(
-        new File([blob], event.data.folder, { type: 'application/zip' }),
-      ),
+      payload,
       folder,
       id,
       type: 'result',
       source: 'zip',
-    });
+    }, [payload.buffer]);
   } catch (error) {
     console.error(error);
   }

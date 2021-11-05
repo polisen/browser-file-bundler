@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
-import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
 import { appendResults } from 'slices/fileProcessingSlice';
+import { URL } from 'url';
 
 function useBundler() {
   const workerRef: any = useRef();
@@ -11,7 +11,14 @@ function useBundler() {
       new URL('../workers/bundler.worker.ts', import.meta.url),
     );
     workerRef.current.onmessage = (evt: any) => {
-      dispatch(appendResults(evt.data));
+      console.debug('evt.data', evt.data);
+      const { payload, ...rest } = evt.data;
+      dispatch(
+        appendResults({
+          payload: URL.createObjectURL(new File([payload], rest.id)),
+          ...rest,
+        }),
+      );
     };
     return () => {
       workerRef.current.terminate();
@@ -25,7 +32,7 @@ function useBundler() {
       path: f.path,
     }));
     // dispatch(setFiles(fileObjects));
-    console.debug(fileObjects);
+    console.debug({ fileObjects });
     workerRef.current.postMessage(fileObjects);
   }, []);
 

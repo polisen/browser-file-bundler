@@ -42,7 +42,7 @@ interface Queue {
 const parseQueue = (queue: Queue) => Object.entries(queue).map(([key, value]) => {
   const files: any[] = [];
   const objectType = value.length > 1 ? 'folder' : 'file';
-  let entityName = ''
+  let entityName = '';
   let cumulativeSize = 0;
 
   value.forEach((fileObj: FileObj) => {
@@ -79,9 +79,16 @@ function zip(folderObject: { files: Files; id: string }) {
     new URL('../workers/zipper.worker.ts', import.meta.url),
   );
   zipper.onmessage = (evt: any) => {
-    postMessage(evt.data);
+    console.debug('bundler zip', evt.data);
     if (evt.data.type === 'result') {
+      postMessage(evt.data, [evt.data.payload.buffer]);
+    } else {
+      postMessage(evt.data);
+    }
+    if (evt.data.type === 'result') {
+      fetch(evt.data.payload).then((b) => console.debug(b.blob()));
       zipper.terminate();
+      fetch(evt.data.payload).then((b) => console.debug(b.blob()));
     }
   };
   zipper.postMessage(folderObject);
@@ -92,7 +99,8 @@ function gzip(file: FileObj) {
     new URL('../workers/gzipper.worker.ts', import.meta.url),
   );
   gzipper.onmessage = (evt: any) => {
-    postMessage(evt.data);
+    console.debug('bundler gzip', evt.data);
+    // postMessage(evt.data, [evt.data.payload.buffer]);
     gzipper.terminate();
   };
   gzipper.postMessage(file);
@@ -108,6 +116,7 @@ function delegate(id: string, files: Files) {
 }
 
 addEventListener('message', (event: MessageEvent) => {
+  console.debug('gay');
   const queue = createQueue(event.data);
   postMessage({ payload: parseQueue(queue), type: 'queue', source: 'bundler' });
   Object.entries(queue).forEach(([id, files]: any) => {
